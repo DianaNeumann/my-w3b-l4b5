@@ -1,4 +1,6 @@
-# [L1v5 D5m0](https://diananeumann.github.io/Web-Labs/index.html#)
+# [Live Demo](https://diananeumann.github.io/Web-Labs/index.html#)
+
+---
 
 Мною решено было сделать рабочий стол старой винды в полу-шуточном стиле, используя  https://github.com/jdan/98.css
 
