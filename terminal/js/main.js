@@ -155,33 +155,30 @@ function loopLines(name, style, time) {
   });
 }
 
-
-async function fetchComments() {
-  try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/comments');
+function fetchComments() {
+  return fetch('https://jsonplaceholder.typicode.com/comments')
+  .then(response => {
       if (!response.ok) {
-          return 'Network response was not ok ' + response.statusText;
+          throw new Error('Network response was not ok ' + response.statusText);
       }
-      else{
-        const data = await response.json();
-        const randomComments = [];
-        const usedIndexes = new Set();
-        while (randomComments.length < 10) {
-          const randomIndex = Math.floor(Math.random() * 500);
+      return response.json();
+  })
+  .then(data => {
+      const randomComments = [];
+      const usedIndexes = new Set();
+      while (randomComments.length < 10) {
+          const randomIndex = Math.floor(Math.random() * data.length);
           if (!usedIndexes.has(randomIndex)) {
-            randomComments.push(data[randomIndex]);
-            usedIndexes.add(randomIndex);
+              randomComments.push(data[randomIndex]);
+              usedIndexes.add(randomIndex);
           }
-        }
-  
-        const stringifiedComments = randomComments.map(comment => {
-            return `ID: ${comment.id}, Name: ${comment.name}, Email: ${comment.email}, Body: ${comment.body}`;
-        });
-  
-        return stringifiedComments;
       }
-      
-  } catch (error) {
-      return 'There has been a problem with your fetch operation:' +  error;
-  }
+
+      return randomComments.map(comment => {
+          return `ID: ${comment.id}, Name: ${comment.name}, Email: ${comment.email}, Body: ${comment.body}`;
+      });
+  })
+  .catch(error => {
+      return 'There has been a problem with your fetch operation: ' + error.message;
+  });
 }
